@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Fraud Detection System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-gradient"></div>
+    <div class="background-circles">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- LEFT PANEL -->
+        <aside class="left-panel">
+            <header class="panel-header">
+                <div class="brand">
+                    <i data-lucide="shield-check" class="brand-icon"></i>
+                    <span>SecureBank AI</span>
+                </div>
+                <h1 class="project-title">Credit Card Fraud Detection</h1>
+                <p class="project-description">
+                    An advanced, real-time transaction screening system powered by machine learning. Input transaction details to perform an instant threat analysis.
+                </p>
+            </header>
+
+            <div class="feature-cards-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="cpu" class="feature-icon"></i>
+                    </div>
+                    <div class="feature-info">
+                        <h3>AI Powered Detection</h3>
+                        <p>Leverages ensemble classifiers for precision.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="git-branch" class="feature-icon"></i>
+                    </div>
+                    <div class="feature-info">
+                        <h3>Random Forest Model</h3>
+                        <p>High capacity decision tree structures.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="lock" class="feature-icon"></i>
+                    </div>
+                    <div class="feature-info">
+                        <h3>Secure Analysis</h3>
+                        <p>Encrypted real-time transaction vectors.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i data-lucide="zap" class="feature-icon"></i>
+                    </div>
+                    <div class="feature-info">
+                        <h3>Real-time Verdict</h3>
+                        <p>Sub-millisecond inference speeds.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-value">75k</span>
+                    <span class="stat-label">Dataset Size</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">100%</span>
+                    <span class="stat-label">Model Accuracy</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value">R-Forest</span>
+                    <span class="stat-label">Best Algorithm</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT PANEL -->
+        <main class="right-panel">
+            <div class="panel-card prediction-card">
+                <h2>New Transaction Analysis</h2>
+                <p class="subtitle">Complete the fields below to run fraud evaluation.</p>
+
+                <form id="prediction-form" class="prediction-form">
+                    <div class="form-grid">
+                        <!-- Transaction Amount -->
+                        <div class="form-group full-width">
+                            <label for="amt">Transaction Amount ($)</label>
+                            <div class="input-wrapper">
+                                <span class="input-prefix">$</span>
+                                <input type="number" id="amt" name="amt" step="0.01" min="0.01" placeholder="0.00" required>
+                            </div>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" required>
+                                <option value="" disabled selected>Select category</option>
+                                {% for cat in categories %}
+                                    <option value="{{ cat }}">{{ cat.replace('_', ' ') | title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Merchant -->
+                        <div class="form-group">
+                            <label for="merchant">Merchant (Optional)</label>
+                            <select id="merchant" name="merchant">
+                                <option value="">Auto-choose Sample Merchant</option>
+                                {% for merch in merchants %}
+                                    <option value="{{ merch }}">{{ merch }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="form-group">
+                            <label for="age">Customer Age</label>
+                            <input type="number" id="age" name="age" min="18" max="120" placeholder="Years" required>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+
+                        <!-- State -->
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <select id="state" name="state" required>
+                                <option value="" disabled selected>Select state</option>
+                                {% for st in states %}
+                                    <option value="{{ st }}">{{ st }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- City Population -->
+                        <div class="form-group">
+                            <label for="city_pop">City Population</label>
+                            <input type="number" id="city_pop" name="city_pop" min="0" placeholder="e.g. 50000" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="predict-btn" class="predict-button">
+                        <span class="btn-text">Perform Risk Analysis</span>
+                        <div class="spinner hidden"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- RESULT SECTION -->
+            <div id="result-section" class="panel-card result-card hidden">
+                <div class="result-header">
+                    <div id="result-badge" class="result-badge">
+                        <i id="result-icon" data-lucide="shield-alert"></i>
+                    </div>
+                    <div class="result-title-container">
+                        <h3 id="result-label">Legitimate Transaction</h3>
+                        <p class="subtitle">Verbatim AI Threat Classification</p>
+                    </div>
+                </div>
+
+                <div class="result-body">
+                    <div class="probability-metric">
+                        <div class="metric-text">
+                            <span>Fraud Probability</span>
+                            <span id="probability-value" class="probability-value">0.00%</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div id="probability-progress" class="progress-bar-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-box">
+                        <h4>Security Recommendation:</h4>
+                        <p id="recommendation-text">This transaction appears safe.</p>
+                    </div>
+
+                    <!-- Details Accordion -->
+                    <div class="details-accordion">
+                        <div class="accordion-header" onclick="toggleDetails()">
+                            <span>Diagnostic Info</span>
+                            <i data-lucide="chevron-down" id="accordion-chevron"></i>
+                        </div>
+                        <div id="accordion-content" class="accordion-content hidden">
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <span class="detail-title">Simulated Distance:</span>
+                                    <span id="detail-distance" class="detail-val">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-title">Transaction Hour:</span>
+                                    <span id="detail-hour" class="detail-val">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-title">Day of Week:</span>
+                                    <span id="detail-day" class="detail-val">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-title">Merchant Used:</span>
+                                    <span id="detail-merchant" class="detail-val">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
