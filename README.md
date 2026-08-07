@@ -164,4 +164,4 @@ To deploy this project to Render:
 
 ## ✍️ Author
 
-*   **Meenu Mahima** - [GitHub](https://github.com/yourusername) | [LinkedIn](https://linkedin.com/in/yourusername)
+*   **Meenu Mahima** - [GitHub](https://github.com/meenumahima) 
